@@ -5,24 +5,26 @@ using UnityEngine;
 public class PlayerAnimations : MonoBehaviour
 {
     [Header ("References")]
-    private PlayerInput inputScript;
     private PlayerMovement movementScript;
+    private Animator anim;
+    private Rigidbody2D body;
+    private int velocityHash;
+    private int isJumpingHash;
 
-    public enum State { Idle, Walk, Jump }
-    private State playerState = State.Idle;
+    private void Awake() {
+        movementScript = GetComponent<PlayerMovement>();
+        anim = GetComponent<Animator>();
+        body = GetComponent<Rigidbody2D>();
 
-    private void OnEnable() {
-        playerState = State.Idle;
+        // converts string to int
+        velocityHash = Animator.StringToHash("velocity");
+        isJumpingHash = Animator.StringToHash("isJumping");
     }
 
     private void Update() {
-        /* TODO
-        if(Mathf.Abs(movementScript.CurVelocity.y) > 0.1) {
-            
-        }
-        if(Mathf.Abs(movementScript.CurVelocity.x) > 0.1) {
-            
-        }
-        */
+
+        anim.SetFloat(velocityHash, Mathf.Abs(body.velocity.x));
+        anim.SetBool(isJumpingHash, !movementScript.IsGrounded);
     }
+
 }

@@ -21,8 +21,9 @@ public class PlayerMovement : MonoBehaviour
 
     private float moveDir;
     private Vector2 curVelocity;
-    private float canJumpTimer = 0f;
+    private float canJumpTimer;
     public bool IsGrounded { get; private set;}
+    private Vector3 playerScale = Vector3.one;
 
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
@@ -34,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable() {
         curVelocity = Vector2.zero;
+        playerScale = Vector3.one;
+        canJumpTimer = -1f;
     }
 
     private void OnDisable() {
@@ -70,10 +73,15 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    /** Applies x direction movement calculations to rigidbody **/
+    /** Applied movement calculations to rigidbody and rotates player **/
     private void MovePlayer() {
         curVelocity.y = body.velocity.y;
         body.velocity = curVelocity;
+
+        // make player face move input
+        if(inputScript.MoveInput != 0f)
+            playerScale.x = Mathf.Sign(inputScript.MoveInput);
+        transform.localScale = playerScale;
     }
 
     /** Caps x velocity at moveSpeed **/
