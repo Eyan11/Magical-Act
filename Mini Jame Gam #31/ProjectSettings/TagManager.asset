@@ -8,6 +8,7 @@ TagManager:
   - Rabbit
   - Spawn
   - Card
+  - Hat
   layers:
   - Default
   - TransparentFX

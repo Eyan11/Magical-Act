@@ -13,6 +13,7 @@ public class PlayerInput : MonoBehaviour
     // button down inputs
     public bool JumpInput { get; private set; }
     public bool TransformInput { get; private set; }
+    public bool InteractInput { get; private set; }
 
 
     private void Awake() {
@@ -29,6 +30,7 @@ public class PlayerInput : MonoBehaviour
         // gets button down inputs (true for 1 frame)
         JumpInput = inputMap.Player.Jump.triggered;
         TransformInput = inputMap.Player.Transform.triggered;
+        InteractInput = inputMap.Player.Interact.triggered;
     }
 
 }
