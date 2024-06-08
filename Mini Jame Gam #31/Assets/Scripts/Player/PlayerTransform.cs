@@ -8,6 +8,8 @@ public class PlayerTransform : MonoBehaviour
     [SerializeField] private GameObject magicianPlayer;
     [SerializeField] private GameObject rabbitPlayer;
     [SerializeField] private GameObject magicianHat;
+    private PlayerMovement magicianMoveScript;
+    private PlayerMovement rabbitMoveScript;
     private BoxCollider2D hatColl;
     private BoxCollider2D magicianColl;
     private PlayerInput inputScript;
@@ -19,6 +21,9 @@ public class PlayerTransform : MonoBehaviour
 
     private void Awake() {
         inputScript = GetComponent<PlayerInput>();
+
+        magicianMoveScript = magicianPlayer.GetComponent<PlayerMovement>();
+        rabbitMoveScript = rabbitPlayer.GetComponent<PlayerMovement>();
         hatColl = magicianHat.GetComponent<BoxCollider2D>();
         magicianColl = magicianPlayer.GetComponent<BoxCollider2D>();
     }
@@ -36,26 +41,31 @@ public class PlayerTransform : MonoBehaviour
             // change to magician
             case 'M':
                 playerState = State.Magician;
+                // only enable magician object
                 magicianPlayer.SetActive(true);
                 magicianHat.SetActive(false);
                 rabbitPlayer.SetActive(false);
+                // disable movement scripts
+                magicianMoveScript.enabled = true;
+                rabbitMoveScript.enabled = true;
                 break;
 
             // change to rabbit
             case 'R':
                 playerState = State.Rabbit;
+                // enable hat and rabbit objects
                 magicianPlayer.SetActive(false);
                 magicianHat.SetActive(true);
                 rabbitPlayer.SetActive(true);
                 TransformToRabbit();
                 break;
 
-            // disable both magician and rabbit (for switching levels)
+            // disable input (for switching levels)
             case 'N':
                 playerState = State.None;
-                magicianPlayer.SetActive(false);
-                magicianHat.SetActive(false);
-                rabbitPlayer.SetActive(false);
+                // disable movement
+                magicianMoveScript.enabled = false;
+                rabbitMoveScript.enabled = false;
                 break;
 
             default:

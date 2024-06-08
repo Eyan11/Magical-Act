@@ -33,8 +33,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void OnEnable() {
-        // reset variables
         curVelocity = Vector2.zero;
+    }
+
+    private void OnDisable() {
+        // stop x velocity
+        body.velocity = new Vector2(0f, body.velocity.y);
     }
     
     private void Update() {

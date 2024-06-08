@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Magician
   - Rabbit
+  - Spawn
   layers:
   - Default
   - TransparentFX
