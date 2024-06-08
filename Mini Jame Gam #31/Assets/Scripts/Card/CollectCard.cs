@@ -18,13 +18,13 @@ public class CollectCard : MonoBehaviour
     }
 
     private void CollectedCard() {
-
-        Destroy(gameObject);
-
         // play victory effects
 
         // go to next level
-        levelScript.ChangeLevel(1);
+        levelScript.ChangeLevel(levelScript.CurLevel + 1);
+
+        // deactivate card
+        gameObject.SetActive(false);
     }
 
 }

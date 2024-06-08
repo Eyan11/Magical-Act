@@ -29,14 +29,13 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         inputScript = GetComponentInParent<PlayerInput>();
-
-        StartCoroutine(GroundCheckCoroutine());
     }
 
     private void OnEnable() {
         curVelocity = Vector2.zero;
         playerScale = Vector3.one;
         canJumpTimer = -1f;
+        StartCoroutine(GroundCheckCoroutine());
     }
 
     private void OnDisable() {

@@ -41,13 +41,13 @@ public class PlayerTransform : MonoBehaviour
             // change to magician
             case 'M':
                 playerState = State.Magician;
+                // enable movement scripts
+                magicianMoveScript.enabled = true;
+                rabbitMoveScript.enabled = true;
                 // only enable magician object
                 magicianPlayer.SetActive(true);
                 magicianHat.SetActive(false);
                 rabbitPlayer.SetActive(false);
-                // disable movement scripts
-                magicianMoveScript.enabled = true;
-                rabbitMoveScript.enabled = true;
                 break;
 
             // change to rabbit
