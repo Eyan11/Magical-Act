@@ -220,16 +220,7 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""id"": ""5aece839-e3aa-450b-9231-38435eb89d1f"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Hold(duration=1)"",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""RestartDown"",
-                    ""type"": ""Button"",
-                    ""id"": ""6abbe5ad-c85e-49bf-b799-873e852b5ea4"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -255,28 +246,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6b5e0907-c98c-4b57-b5ab-4ea9cfc819ee"",
-                    ""path"": ""<Keyboard>/r"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RestartDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""6c345119-b257-4004-b2dc-12f9316e45d2"",
-                    ""path"": ""<Gamepad>/buttonEast"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""RestartDown"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -292,7 +261,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Restart = m_UI.FindAction("Restart", throwIfNotFound: true);
-        m_UI_RestartDown = m_UI.FindAction("RestartDown", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -425,13 +393,11 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_UI;
     private List<IUIActions> m_UIActionsCallbackInterfaces = new List<IUIActions>();
     private readonly InputAction m_UI_Restart;
-    private readonly InputAction m_UI_RestartDown;
     public struct UIActions
     {
         private @InputMap m_Wrapper;
         public UIActions(@InputMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Restart => m_Wrapper.m_UI_Restart;
-        public InputAction @RestartDown => m_Wrapper.m_UI_RestartDown;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -444,9 +410,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Restart.started += instance.OnRestart;
             @Restart.performed += instance.OnRestart;
             @Restart.canceled += instance.OnRestart;
-            @RestartDown.started += instance.OnRestartDown;
-            @RestartDown.performed += instance.OnRestartDown;
-            @RestartDown.canceled += instance.OnRestartDown;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -454,9 +417,6 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
             @Restart.started -= instance.OnRestart;
             @Restart.performed -= instance.OnRestart;
             @Restart.canceled -= instance.OnRestart;
-            @RestartDown.started -= instance.OnRestartDown;
-            @RestartDown.performed -= instance.OnRestartDown;
-            @RestartDown.canceled -= instance.OnRestartDown;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -484,6 +444,5 @@ public partial class @InputMap: IInputActionCollection2, IDisposable
     public interface IUIActions
     {
         void OnRestart(InputAction.CallbackContext context);
-        void OnRestartDown(InputAction.CallbackContext context);
     }
 }

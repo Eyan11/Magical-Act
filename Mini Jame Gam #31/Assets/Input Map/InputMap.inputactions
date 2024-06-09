@@ -198,16 +198,7 @@
                     "id": "5aece839-e3aa-450b-9231-38435eb89d1f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Hold(duration=1)",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "RestartDown",
-                    "type": "Button",
-                    "id": "6abbe5ad-c85e-49bf-b799-873e852b5ea4",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -231,28 +222,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Restart",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6b5e0907-c98c-4b57-b5ab-4ea9cfc819ee",
-                    "path": "<Keyboard>/r",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RestartDown",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "6c345119-b257-4004-b2dc-12f9316e45d2",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "RestartDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
