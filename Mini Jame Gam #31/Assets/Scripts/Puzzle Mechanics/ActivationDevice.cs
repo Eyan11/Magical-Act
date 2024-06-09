@@ -27,7 +27,7 @@ public class ActivationDevice : MonoBehaviour
             itemsOnPlate++;
             platformScript.ActivatePlatform();
             // play plate sound
-            SoundManager.current.PlaySFX(plateSound, 0.1f);
+            SoundManager.current.PlaySFX(plateSound, 0.3f);
         }
     }
 
@@ -39,7 +39,7 @@ public class ActivationDevice : MonoBehaviour
             if(itemsOnPlate <= 0) {
                 platformScript.DeactivatePlatform();
                 // play plate sound
-                SoundManager.current.PlaySFX(plateSound, 0.1f);
+                SoundManager.current.PlaySFX(plateSound, 0.3f);
             }
         }
     }
@@ -68,11 +68,11 @@ public class ActivationDevice : MonoBehaviour
                 // flip switch stick and play sound
                 if(!isActivated) {
                     transform.localScale = Vector3.one;
-                    SoundManager.current.PlaySFX(switchDisableSound, 0.05f);
+                    SoundManager.current.PlaySFX(switchDisableSound, 0.1f);
                 }
                 else {
                     transform.localScale = new Vector3(-1f, 1f, 1f);
-                    SoundManager.current.PlaySFX(switchEnableSound, 0.05f);
+                    SoundManager.current.PlaySFX(switchEnableSound, 0.1f);
                 }
             }
         }
