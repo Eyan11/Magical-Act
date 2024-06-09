@@ -16,7 +16,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float moveAcceleration;
     [SerializeField] private float moveDeaccelerationFactor;
     [SerializeField] private float moveMaxSpeed;
-    [SerializeField] private float jumpForce;
+    [SerializeField] private float jumpSpeed;
     [SerializeField] private float groundedRayDist;
 
     private float moveDir;
@@ -93,10 +93,10 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    /** Applies jump force to rigidbody **/
+    /** Applies jump speed to rigidbody **/
     private void Jump() {
         canJumpTimer = -1f;
-        body.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        body.velocity = new Vector2(body.velocity.x, jumpSpeed);
     }
 
     /** Returns true if grounded **/

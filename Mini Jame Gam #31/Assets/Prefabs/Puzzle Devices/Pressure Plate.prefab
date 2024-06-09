@@ -94,6 +94,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlate: 1
   platformScript: {fileID: 0}
+  switchEnableSound: {fileID: 8300000, guid: 2d8be8b7df9308b42b5c24c81019a703, type: 3}
+  switchDisableSound: {fileID: 8300000, guid: ca8e3fe145f0c3048bfb88c46ee5d181, type: 3}
+  plateSound: {fileID: 8300000, guid: 39f31d4614c593641a63d66cab9b926b, type: 3}
 --- !u!114 &8818598448344035834
 MonoBehaviour:
   m_ObjectHideFlags: 0

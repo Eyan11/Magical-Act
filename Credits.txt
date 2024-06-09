@@ -1,0 +1,23 @@
+Team:
+
+Eyan - Programming
+
+Josue - Art
+
+Justin - Music
+
+
+
+
+
+Asset Credits:
+
+Pressure Plate by proolsen -- https://freesound.org/s/466272/ -- License: Creative Commons 0 (used for pressure plate)
+
+Circuit Breaker 1 SP.wav by sribubba -- https://freesound.org/s/130152/ -- License: Creative Commons 0 (used for switch disable)
+
+Circuit Breaker 2 DP.wav by sribubba -- https://freesound.org/s/130153/ -- License: Creative Commons 0 (used for switch enable)
+
+/////Gabelstapler Komplett. ZN.wav by Soundaddiction -- https://freesound.org/s/493082/ -- License: Creative Commons 0 (used for moving crates)
+
+Footsteps_Boots_Wood_Mono.wav by Nox_Sound -- https://freesound.org/s/533044/ -- License: Creative Commons 0 (used for  footsteps)

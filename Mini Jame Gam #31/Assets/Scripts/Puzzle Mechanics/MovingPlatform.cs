@@ -28,9 +28,7 @@ public class MovingPlatform : MonoBehaviour
 
     public void TogglePlatformLoop() {
         hasLoopMovement = true;
-        // toggle activation
         isActivated = !isActivated;
-        Debug.Log("isActivated: " + isActivated);
     }
 
     private void Update() {

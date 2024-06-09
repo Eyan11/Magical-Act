@@ -9,17 +9,25 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private Transform playerHolder;
     [SerializeField] private GameObject titleScreenUI;
     [SerializeField] private GameObject endScreenUI;
+    private PlayerInput inputScript;
     private PlayerTransform transformScript;
     private Camera cam;
+
+    [Header ("Sounds")]
+    [SerializeField] private AudioClip levelMusic;
+    [SerializeField] private AudioClip titleMusic;
+    [SerializeField] private AudioClip endMusic;
 
     [Header ("Settings")]
     [SerializeField] private float curtainCloseTime;
 
     public int CurLevel { get; private set; }
+    private bool isChangingLevel = false;
 
     private void Awake() {
         cam = Camera.main;
         transformScript = playerHolder.GetComponent<PlayerTransform>();
+        inputScript = playerHolder.GetComponent<PlayerInput>();
         
         // set up title screen
         // TODO: start with curtain closed and open it
@@ -29,7 +37,7 @@ public class LevelManager : MonoBehaviour
     }
 
     public void ChangeLevel(int nextLevel) {
-
+        isChangingLevel = true;
         // clean up current level
         transformScript.ChangeState('N');
         // TODO: start curtain animation
@@ -48,18 +56,19 @@ public class LevelManager : MonoBehaviour
         // if setting up title screen
         if(CurLevel <= 0) {
             titleScreenUI.SetActive(true);
-            Debug.Log("Title Screen");
+            SoundManager.current.PlayMusic(titleMusic, 1f);
             return;
         }
         // if setting up end screen
         else if(CurLevel >= levelArr.Length - 1) {
             endScreenUI.SetActive(true);
-            Debug.Log("End Screen");
+            SoundManager.current.PlayMusic(endMusic, 1f);
             return;
         }
         
 
-        Debug.Log("Next Level");
+        // music (won't restart if already playing)
+        SoundManager.current.PlayMusic(levelMusic, 1f);
 
         // move cam to next level
         cam.transform.position = new Vector3(levelArr[CurLevel].position.x, levelArr[CurLevel].position.y, cam.transform.position.z);
@@ -75,5 +84,14 @@ public class LevelManager : MonoBehaviour
 
         // allow movement
         transformScript.ChangeState('M');
+        isChangingLevel = false;
+    }
+
+    private void Update() {
+        // restart level if not on title or end screen and not already changing level
+        if(inputScript.RestartInput && !isChangingLevel && CurLevel > 0 && CurLevel < levelArr.Length - 1) {
+            Debug.Log("LevelManager change state");
+            ChangeLevel(CurLevel);
+        }
     }
 }

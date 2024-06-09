@@ -12,6 +12,11 @@ public class ActivationDevice : MonoBehaviour
     private float isNextToSwitchTimer = -1f;
     private bool isActivated = false;
 
+    [Header ("Sounds")]
+    [SerializeField] private AudioClip switchEnableSound;
+    [SerializeField] private AudioClip switchDisableSound;
+    [SerializeField] private AudioClip plateSound;
+
     private void Awake() {
         inputScript = GetComponent<PlayerInput>();
     }
@@ -22,6 +27,7 @@ public class ActivationDevice : MonoBehaviour
             itemsOnPlate++;
             platformScript.ActivatePlatform();
             // play plate sound
+            SoundManager.current.PlaySFX(plateSound, 0.1f);
         }
     }
 
@@ -33,6 +39,7 @@ public class ActivationDevice : MonoBehaviour
             if(itemsOnPlate <= 0) {
                 platformScript.DeactivatePlatform();
                 // play plate sound
+                SoundManager.current.PlaySFX(plateSound, 0.1f);
             }
         }
     }
@@ -57,13 +64,16 @@ public class ActivationDevice : MonoBehaviour
             if(isNextToSwitchTimer > 0f && inputScript.InteractInput) {
                 platformScript.TogglePlatformLoop();
                 isActivated = !isActivated;
-                // play sound
 
-                // flip switch stick
-                if(!isActivated)
+                // flip switch stick and play sound
+                if(!isActivated) {
                     transform.localScale = Vector3.one;
-                else
+                    SoundManager.current.PlaySFX(switchDisableSound, 0.05f);
+                }
+                else {
                     transform.localScale = new Vector3(-1f, 1f, 1f);
+                    SoundManager.current.PlaySFX(switchEnableSound, 0.05f);
+                }
             }
         }
 

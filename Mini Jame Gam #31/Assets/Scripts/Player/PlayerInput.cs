@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
 
     private InputMap inputMap;
 
-    // vector inputs
+    // float input
     public float MoveInput { get; private set; }
 
     // button down inputs
@@ -15,6 +15,8 @@ public class PlayerInput : MonoBehaviour
     public bool TransformInput { get; private set; }
     public bool InteractInput { get; private set; }
 
+    // hold input
+    public bool RestartInput { get; private set;}
 
     private void Awake() {
         // create a new Input Map object and enable the King Slime input
@@ -24,13 +26,16 @@ public class PlayerInput : MonoBehaviour
 
     private void Update() {
 
-        // gets vector2 input from input map
+        // gets float input (-1 to 1)
         MoveInput = inputMap.Player.Move.ReadValue<float>();
 
         // gets button down inputs (true for 1 frame)
         JumpInput = inputMap.Player.Jump.triggered;
         TransformInput = inputMap.Player.Transform.triggered;
         InteractInput = inputMap.Player.Interact.triggered;
+
+        // gets hold input (hold for 1 seconds)
+        RestartInput = inputMap.Player.Restart.triggered;
     }
 
 }
