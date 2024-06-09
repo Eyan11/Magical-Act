@@ -34,7 +34,8 @@ public class PlayerTransform : MonoBehaviour
 
     private void Update() {
         
-        if(inputScript.TransformInput && playerState == State.Magician)
+        // only transform when grounded
+        if(inputScript.TransformInput && playerState == State.Magician && magicianMoveScript.IsGrounded)
             ChangeState('R');
     }
 

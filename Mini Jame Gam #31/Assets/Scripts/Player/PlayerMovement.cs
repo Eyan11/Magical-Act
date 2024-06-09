@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header ("References")]
     [SerializeField] private LayerMask floorLayer;
+    private PlayerAnimations animScript;
     private Rigidbody2D body;
     private BoxCollider2D coll;
     private PlayerInput inputScript;
@@ -29,6 +30,7 @@ public class PlayerMovement : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         inputScript = GetComponentInParent<PlayerInput>();
+        animScript = GetComponent<PlayerAnimations>();
     }
 
     private void OnEnable() {
@@ -69,7 +71,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(inputScript.JumpInput && canJumpTimer > 0f)
             Jump();
-
     }
 
     /** Applied movement calculations to rigidbody and rotates player **/
@@ -90,7 +91,6 @@ public class PlayerMovement : MonoBehaviour
             curVelocity.x = moveMaxSpeed;
         else if(curVelocity.x < -moveMaxSpeed)
             curVelocity.x = -moveMaxSpeed;
-
     }
 
     /** Applies jump speed to rigidbody **/

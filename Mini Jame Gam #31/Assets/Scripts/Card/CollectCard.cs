@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class CollectCard : MonoBehaviour
 {
-    [Header ("References")]
+    [SerializeField] private AudioClip levelCompleteChime;
+    [SerializeField] private float chimeVol;
     private LevelManager levelScript;
 
     private void Awake() {
@@ -18,7 +19,8 @@ public class CollectCard : MonoBehaviour
     }
 
     private void CollectedCard() {
-        // play victory effects
+        // play victory sfx
+        SoundManager.current.PlaySFX(levelCompleteChime, chimeVol);
 
         // go to next level
         levelScript.ChangeLevel(levelScript.CurLevel + 1);

@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private AudioClip levelMusic;
     [SerializeField] private AudioClip titleMusic;
     [SerializeField] private AudioClip endMusic;
+    [SerializeField] private float musicVol;
 
     [Header ("Settings")]
     [SerializeField] private float curtainCloseTime;
@@ -63,14 +64,14 @@ public class LevelManager : MonoBehaviour
         if(CurLevel <= 0) {
             titleScreenUI.SetActive(true);
             uiScript.HideRestartUI();
-            SoundManager.current.PlayMusic(titleMusic, 1f);
+            SoundManager.current.PlayMusic(titleMusic, musicVol);
             return;
         }
         // if setting up end screen
         else if(CurLevel >= levelArr.Length - 1) {
             endScreenUI.SetActive(true);
             uiScript.HideRestartUI();
-            SoundManager.current.PlayMusic(endMusic, 1f);
+            SoundManager.current.PlayMusic(endMusic, musicVol);
             return;
         }
         
@@ -78,7 +79,7 @@ public class LevelManager : MonoBehaviour
         uiScript.ShowRestartUI();
 
         // music (won't restart if already playing)
-        SoundManager.current.PlayMusic(levelMusic, 1f);
+        SoundManager.current.PlayMusic(levelMusic, musicVol);
 
         // move cam to next level
         cam.transform.position = new Vector3(levelArr[CurLevel].position.x, levelArr[CurLevel].position.y, cam.transform.position.z);
