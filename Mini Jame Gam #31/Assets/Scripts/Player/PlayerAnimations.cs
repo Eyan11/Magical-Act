@@ -50,7 +50,6 @@ public class PlayerAnimations : MonoBehaviour
             isMoving = false;
 
         anim.SetBool(isMovingHash, isMoving);
-        Debug.Log(isMoving);
 
         firstXPosition = lastXPosition;
     }

@@ -8,8 +8,10 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private UIManager uiScript;
     [SerializeField] private Transform[] levelArr;
     [SerializeField] private Transform playerHolder;
-    [SerializeField] private GameObject titleScreenUI;
-    [SerializeField] private GameObject endScreenUI;
+    [SerializeField] private GameObject titleScreenImages;
+    [SerializeField] private GameObject titleScreenButtons;
+    [SerializeField] private GameObject endScreenImages;
+    [SerializeField] private GameObject endScreenButtons;
     private PlayerTransform transformScript;
     private Camera cam;
 
@@ -44,7 +46,7 @@ public class LevelManager : MonoBehaviour
         transformScript.ChangeState('N');
 
         // close curtains
-        uiScript.CloseCurtains();
+        StartCoroutine(uiScript.CloseCurtainsCoroutine());
 
         // lower music if changing to a scene with different music
         if(CurLevel <= 0 || nextLevel <= 0 || CurLevel >= levelArr.Length - 1 || nextLevel >= levelArr.Length - 1)
@@ -57,19 +59,29 @@ public class LevelManager : MonoBehaviour
     private void SetUpCurrentLevel() {
 
         // disable title and end screen in case enabled
-        titleScreenUI.SetActive(false);
-        endScreenUI.SetActive(false);
+        titleScreenImages.SetActive(false);
+        titleScreenButtons.SetActive(false);
+        endScreenImages.SetActive(false);
+        endScreenButtons.SetActive(false);
+
+        // move cam to next level
+        cam.transform.position = new Vector3(levelArr[CurLevel].position.x, levelArr[CurLevel].position.y, cam.transform.position.z);
+
+        // open curtains
+        StartCoroutine(uiScript.OpenCurtainsCoroutine());
 
         // if setting up title screen
         if(CurLevel <= 0) {
-            titleScreenUI.SetActive(true);
+            titleScreenImages.SetActive(true);
+            titleScreenButtons.SetActive(true);
             uiScript.HideRestartUI();
             SoundManager.current.PlayMusic(titleMusic, musicVol);
             return;
         }
         // if setting up end screen
         else if(CurLevel >= levelArr.Length - 1) {
-            endScreenUI.SetActive(true);
+            endScreenImages.SetActive(true);
+            endScreenButtons.SetActive(true);
             uiScript.HideRestartUI();
             SoundManager.current.PlayMusic(endMusic, musicVol);
             return;
@@ -80,9 +92,6 @@ public class LevelManager : MonoBehaviour
 
         // music (won't restart if already playing)
         SoundManager.current.PlayMusic(levelMusic, musicVol);
-
-        // move cam to next level
-        cam.transform.position = new Vector3(levelArr[CurLevel].position.x, levelArr[CurLevel].position.y, cam.transform.position.z);
     
         // place magician, rabbit, and hat in next level
         if(levelArr[CurLevel].GetChild(0).tag == "Spawn") {
@@ -92,9 +101,6 @@ public class LevelManager : MonoBehaviour
         }
         else
             Debug.LogError("Level " + CurLevel + "Needs first child to be spawn position and have spawn tag");
-
-        // open curtains
-        uiScript.OpenCurtains();
 
         // allow movement
         transformScript.ChangeState('M');
