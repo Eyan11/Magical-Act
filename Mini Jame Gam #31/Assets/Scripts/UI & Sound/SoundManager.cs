@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
     [SerializeField] private AudioSource musicSource;
     [SerializeField] private AudioSource sfxSource;
     private float curMusicVol;
+    private float lowerMusicCountdown;
 
 
     //global reference to this script
@@ -41,8 +42,25 @@ public class SoundManager : MonoBehaviour
     }
 
     /** Lowers music volume, for transitioning between music **/
-    public void LowerMusicVolume(float volumePercent) {
-        musicSource.volume = curMusicVol * volumePercent;
+    public IEnumerator LowerMusicVolumeCoroutine(float lowerMusicTime) {
+
+        // start a little less incase trying to lower music while playing new music clip
+        lowerMusicCountdown = lowerMusicTime -= 0.1f;
+
+        // while music is not silent
+        while(lowerMusicCountdown > 0) {
+
+            lowerMusicCountdown -= Time.deltaTime;
+
+            if(lowerMusicCountdown <= 0) {
+                musicSource.volume = 0f;
+                yield break;
+            }
+            else {
+                musicSource.volume = (lowerMusicCountdown/lowerMusicTime) * curMusicVol;
+                yield return null;
+            }
+        }
     }
 
 }

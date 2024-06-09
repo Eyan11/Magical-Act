@@ -40,15 +40,6 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "Restart",
-                    "type": "Button",
-                    "id": "40ade5f7-1cdc-4e96-9548-f7e44f532373",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "Hold(duration=1)",
-                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -194,10 +185,36 @@
                     "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "UI",
+            "id": "b1355407-6798-42a6-83e3-d1e3575aa4aa",
+            "actions": [
+                {
+                    "name": "Restart",
+                    "type": "Button",
+                    "id": "5aece839-e3aa-450b-9231-38435eb89d1f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=1)",
+                    "initialStateCheck": false
                 },
                 {
+                    "name": "RestartDown",
+                    "type": "Button",
+                    "id": "6abbe5ad-c85e-49bf-b799-873e852b5ea4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
                     "name": "",
-                    "id": "8d451c80-db2b-4a77-b2e6-47c09f7d3956",
+                    "id": "5e4aecef-9ed2-4a3d-b4a6-c34651287645",
                     "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
@@ -208,12 +225,34 @@
                 },
                 {
                     "name": "",
-                    "id": "bea24593-4614-47f9-a8c3-041a99eae2d4",
+                    "id": "215d2bcd-3558-4a5a-8ea1-ec758ca665b1",
                     "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Restart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b5e0907-c98c-4b57-b5ab-4ea9cfc819ee",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RestartDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6c345119-b257-4004-b2dc-12f9316e45d2",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RestartDown",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

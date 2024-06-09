@@ -12,6 +12,8 @@ Justin - Music
 
 Asset Credits:
 
+Sounds:
+
 Pressure Plate by proolsen -- https://freesound.org/s/466272/ -- License: Creative Commons 0 (used for pressure plate)
 
 Circuit Breaker 1 SP.wav by sribubba -- https://freesound.org/s/130152/ -- License: Creative Commons 0 (used for switch disable)
@@ -21,3 +23,19 @@ Circuit Breaker 2 DP.wav by sribubba -- https://freesound.org/s/130153/ -- Licen
 /////Gabelstapler Komplett. ZN.wav by Soundaddiction -- https://freesound.org/s/493082/ -- License: Creative Commons 0 (used for moving crates)
 
 Footsteps_Boots_Wood_Mono.wav by Nox_Sound -- https://freesound.org/s/533044/ -- License: Creative Commons 0 (used for  footsteps)
+
+another magic wand spell tinkle.flac by Timbre -- https://freesound.org/s/221683/ -- License: Attribution NonCommercial 4.0 (used for transform ability)
+repaired version of 103219__timbre__ping-ching-ring-sword-clang-thing-long-tail.flac by Timbre -- https://freesound.org/s/221641/ -- License: Attribution NonCommercial 4.0
+ping ching ring sword-clang thing (long tail).wav by Timbre -- https://freesound.org/s/103219/ -- License: Attribution NonCommercial 4.0
+Cinematic sword clang.wav by Timbre -- https://freesound.org/s/86846/ -- License: Attribution NonCommercial 4.0
+Sword pulled 2.wav by jobro -- https://freesound.org/s/74832/ -- License: Attribution 3.0
+Sword pulled 2.wav by jobro -- https://freesound.org/s/74832/ -- License: Attribution 3.0
+Sword pulled 2.wav by jobro -- https://freesound.org/s/74832/ -- License: Attribution 3.0
+
+poof.wav by AuDRoger -- https://freesound.org/s/471204/ -- License: Creative Commons 0 (used for transformation smoke effect)
+
+Sprites:
+
+Game Icons from Kenney -- https://www.kenney.nl/assets/game-icons -- License: Creative Commons 0 (used for restart icon)
+
+Input Prompts from Kenney -- https://www.kenney.nl/assets/input-prompts -- License: Creative Commons 0 (used for keyboard Input UI)

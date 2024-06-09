@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-
     private InputMap inputMap;
 
     // float input
@@ -15,8 +14,6 @@ public class PlayerInput : MonoBehaviour
     public bool TransformInput { get; private set; }
     public bool InteractInput { get; private set; }
 
-    // hold input
-    public bool RestartInput { get; private set;}
 
     private void Awake() {
         // create a new Input Map object and enable the King Slime input
@@ -33,9 +30,6 @@ public class PlayerInput : MonoBehaviour
         JumpInput = inputMap.Player.Jump.triggered;
         TransformInput = inputMap.Player.Transform.triggered;
         InteractInput = inputMap.Player.Interact.triggered;
-
-        // gets hold input (hold for 1 seconds)
-        RestartInput = inputMap.Player.Restart.triggered;
     }
 
 }
