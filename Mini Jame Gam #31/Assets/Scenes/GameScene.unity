@@ -501,7 +501,7 @@ GameObject:
   - component: {fileID: 246162007}
   - component: {fileID: 246162006}
   m_Layer: 5
-  m_Name: World Space Canvas
+  m_Name: World Space Canvas (Follows Camera)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -887,7 +887,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 334881751}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3588,7 +3588,7 @@ GameObject:
   - component: {fileID: 1143085437}
   - component: {fileID: 1143085440}
   - component: {fileID: 1143085444}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Magician Player
   m_TagString: Magician
   m_Icon: {fileID: 0}
@@ -3650,18 +3650,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c055aaaacb90704d8d35de8cce7fbcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorLayer:
-    serializedVersion: 2
-    m_Bits: 64
   groundedRayInterval: 0.05
   coyoteTime: 0.15
   jumpBufferTime: 0.3
-  maxMoveSpeed: 2
-  moveForce: 2
-  jumpForce: 13
-  groundedRayDist: 0.1
-  groundedDrag: 30
-  airDrag: 2
+  groundedRayDist: 0.2
+  maxMoveSpeed: 4
+  exitPlatformDeacceleration: 0.5
+  moveAcceleration: 0.8
+  jumpSpeed: 11
 --- !u!114 &1143085444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3675,7 +3671,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMagician: 1
-  moveThreshold: 0.001
 --- !u!61 &1143085446
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4455,7 +4450,7 @@ GameObject:
   - component: {fileID: 1308776546}
   - component: {fileID: 1308776545}
   - component: {fileID: 1308776550}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rabbit Player
   m_TagString: Rabbit
   m_Icon: {fileID: 0}
@@ -4474,18 +4469,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c055aaaacb90704d8d35de8cce7fbcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floorLayer:
-    serializedVersion: 2
-    m_Bits: 64
   groundedRayInterval: 0.05
   coyoteTime: 0.15
   jumpBufferTime: 0.3
-  maxMoveSpeed: 3.5
-  moveForce: 2
-  jumpForce: 18
-  groundedRayDist: 0.1
-  groundedDrag: 30
-  airDrag: 2
+  groundedRayDist: 0.2
+  maxMoveSpeed: 5
+  exitPlatformDeacceleration: 0.5
+  moveAcceleration: 1
+  jumpSpeed: 15
 --- !u!50 &1308776546
 Rigidbody2D:
   serializedVersion: 4
@@ -4542,7 +4533,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isMagician: 0
-  moveThreshold: 0.001
 --- !u!58 &1308776551
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -4847,6 +4837,7 @@ GameObject:
   - component: {fileID: 1378108500}
   - component: {fileID: 1378108499}
   - component: {fileID: 1378108496}
+  - component: {fileID: 1378108501}
   - component: {fileID: 1378108497}
   - component: {fileID: 1378108498}
   m_Layer: 6
@@ -5003,9 +4994,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: -0.6}
+  m_Offset: {x: 0, y: -0.55}
   serializedVersion: 2
-  m_Radius: 1.6
+  m_Radius: 1.5
 --- !u!61 &1378108500
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5051,6 +5042,20 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 4, y: 3}
   m_EdgeRadius: 0
+--- !u!114 &1378108501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378108492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 087238ede8d59504e923d66f8e0036d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rayDist: 0.2
+  rayInterval: 0.05
 --- !u!1001 &1379314118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5750,7 +5755,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1695011300}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

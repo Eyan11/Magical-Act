@@ -34,7 +34,7 @@ public class PlayerTransform : MonoBehaviour
 
     private void Update() {
         
-        // only transform when grounded
+        // transform into rabbit
         if(inputScript.TransformInput && playerState == State.Magician && magicianMoveScript.IsGrounded)
             ChangeState('R');
     }
@@ -60,8 +60,10 @@ public class PlayerTransform : MonoBehaviour
                 playerState = State.Rabbit;
                 magicianAnimScript.SetIsTransforming(true);
                 // disable movement
-                magicianMoveScript.enabled = false;
-                rabbitMoveScript.enabled = false;
+                //magicianMoveScript.enabled = false;
+                //rabbitMoveScript.enabled = false;
+                magicianMoveScript.DisableInput();
+                rabbitMoveScript.DisableInput();
                 SoundManager.current.PlaySFX(magicSound, 0.2f);
                 Invoke("TransformToRabbit", transformTime);
                 break;

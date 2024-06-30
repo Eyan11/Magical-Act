@@ -5,39 +5,47 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header ("References")]
-    [SerializeField] private LayerMask floorLayer;
+    private int floorLayer;
+    private int movingPlatformLayer;
     private PlayerAnimations animScript;
     private Rigidbody2D body;
     private BoxCollider2D coll;
     private PlayerInput inputScript;
+    private Transform playerHolder;
 
     [Header ("Settings")]
     [SerializeField] private float groundedRayInterval;
     [SerializeField] private float coyoteTime;
     [SerializeField] private float jumpBufferTime;
-    [SerializeField] private float maxMoveSpeed;
-    [SerializeField] private float moveForce;
-    [SerializeField] private float jumpForce;
     [SerializeField] private float groundedRayDist;
-    [SerializeField] private float groundedDrag;
-    [SerializeField] private float airDrag;
-    private const int MOVE_FORCE_MULT = 50;
+    [SerializeField] private float maxMoveSpeed;
+    [SerializeField] private float exitPlatformDeacceleration;
+    [SerializeField] private float moveAcceleration;
+    [SerializeField] private float jumpSpeed;
+    private Vector2 finalMoveSpeed = Vector2.zero;
+    public float CurMoveVel { private set; get; }
+    private float platformVel = 0f;
     private float moveDir;
-    private Vector2 curMoveForce;
     private float canJumpTimer;
     private float jumpInputTimer = 0f;
     public bool IsGrounded { get; private set;}
     private Vector3 playerScale = Vector3.one;
+    private RaycastHit2D[] hits = new RaycastHit2D[20];
+    private int numHit = 0;
+    private bool allowInput = true;
 
     private void Awake() {
         body = GetComponent<Rigidbody2D>();
         coll = GetComponent<BoxCollider2D>();
         inputScript = GetComponentInParent<PlayerInput>();
         animScript = GetComponent<PlayerAnimations>();
+        playerHolder = transform.root;
+        floorLayer = LayerMask.NameToLayer("Floor");
+        movingPlatformLayer = LayerMask.NameToLayer("Moving Platform");
     }
 
     private void OnEnable() {
-        curMoveForce = Vector2.zero;
+        EnableInput();
         playerScale = Vector3.one;
         canJumpTimer = -1f;
         StartCoroutine(GroundCheckCoroutine());
@@ -47,27 +55,35 @@ public class PlayerMovement : MonoBehaviour
         // stop x velocity
         body.velocity = new Vector2(0f, body.velocity.y);
     }
+
+    public void DisableInput() {
+        allowInput = false;
+        CurMoveVel = 0f;
+    }
+
+    public void EnableInput() {
+        allowInput = true;
+    }
     
     private void Update() {
-        MoveCalculations();
-        JumpCalculations();
-        LimitSpeed();
+        if(allowInput) {
+            MoveCalculations();
+            JumpCalculations();
+        }
+        MoveAndLimit();
     }
 
-    private void FixedUpdate() {
-        body.AddForce(curMoveForce * MOVE_FORCE_MULT, ForceMode2D.Force);
-    }
 
-    /** Calculates x and y direction movement **/
+    /** Calculates x direction movement **/
     private void MoveCalculations() {
         // input
         moveDir = inputScript.MoveInput;
 
-        // move force
+        // movement calculations
         if(moveDir == 0f)
-            curMoveForce.x = 0f;
+            CurMoveVel = Mathf.Lerp(maxMoveSpeed * moveDir, 0f, moveAcceleration);
         else
-            curMoveForce.x = moveDir * moveForce;
+            CurMoveVel = Mathf.Lerp(0f, maxMoveSpeed * moveDir, moveAcceleration);
 
         // make player face move input
         if(inputScript.MoveInput != 0f)
@@ -75,6 +91,8 @@ public class PlayerMovement : MonoBehaviour
         transform.localScale = playerScale;
     }
 
+
+    /** Handles jump input and calling Jump() **/
     private void JumpCalculations() {
         canJumpTimer -= Time.deltaTime;
         jumpInputTimer -= Time.deltaTime;
@@ -87,37 +105,73 @@ public class PlayerMovement : MonoBehaviour
             Jump();
     }
 
+
     /** Caps x velocity at moveSpeed **/
-    private void LimitSpeed() {
+    private void MoveAndLimit() {
 
-        if(body.velocity.x > maxMoveSpeed)
-            body.velocity = new Vector2(maxMoveSpeed, body.velocity.y);
-        else if(body.velocity.x < -maxMoveSpeed)
-            body.velocity = new Vector2(-maxMoveSpeed, body.velocity.y);
+        // apply velocity
+        finalMoveSpeed.x = CurMoveVel + platformVel;
+        finalMoveSpeed.y = body.velocity.y;
+        body.velocity = finalMoveSpeed;
 
-        Debug.Log(body.velocity.x);
+        // limit velocity
+        if(body.velocity.x > maxMoveSpeed + platformVel)
+            body.velocity = new Vector2(maxMoveSpeed + platformVel, body.velocity.y);
+        else if(body.velocity.x < -maxMoveSpeed - platformVel)
+            body.velocity = new Vector2(-maxMoveSpeed - platformVel, body.velocity.y);
     }
 
-    /** Applies jump speed to rigidbody **/
+
+    /** Applies jump settings and jump force **/
     private void Jump() {
         canJumpTimer = -1f;
         jumpInputTimer = -1f;
-        body.drag = airDrag;
-        body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        body.velocity = new Vector2(body.velocity.x, jumpSpeed);
     }
 
-    /** Returns true if grounded **/
+
+    /** Continuosly checks if grounded and if on moving platform **/
     private IEnumerator GroundCheckCoroutine() {
+        
+        // if box cast hits any collider
+        numHit = coll.Cast(Vector2.down, hits, groundedRayDist);
 
-        IsGrounded = Physics2D.BoxCast(coll.bounds.center, coll.bounds.size, 0f, 
-            Vector2.down, groundedRayDist, floorLayer);
+        IsGrounded = false;
 
-        if(IsGrounded == true && body.velocity.y < 0.1) {
-            canJumpTimer = coyoteTime;
-            body.drag = groundedDrag;
+        for(int i = 0; i < numHit; i++) {
+
+            // on moving platform
+            if(hits[i].transform.gameObject.layer == movingPlatformLayer) {
+
+                IsGrounded = true;
+                platformVel = hits[i].transform.GetComponent<MovingPlatform>().GetVelocity('P');
+                break;
+            }
+            // on floor
+            else if(hits[i].transform.gameObject.layer == floorLayer) {
+
+                IsGrounded = true;
+
+                // on hat
+                if(hits[i].transform.gameObject.tag == "Hat")
+                    platformVel = hits[i].transform.GetComponent<HatPlatformMovement>().GetHatToPlayerVel();
+                else 
+                    platformVel = 0f;
+            }
         }
-        else
-            body.drag = airDrag;
+
+        if(!IsGrounded) {
+            // reduce platform velocity
+            platformVel += -Mathf.Sign(platformVel) * groundedRayInterval * exitPlatformDeacceleration;
+            
+            // set platform velocity to 0
+            if (Mathf.Abs(platformVel) < 0.5)
+                platformVel = 0f;
+        }
+
+        // coyote time
+        if(IsGrounded && canJumpTimer < 0.1)
+            canJumpTimer = coyoteTime;
 
         yield return new WaitForSeconds(groundedRayInterval);
         StartCoroutine(GroundCheckCoroutine());

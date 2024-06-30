@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerAnimations : MonoBehaviour
 {
     [SerializeField] private bool isMagician;
-    [SerializeField] private float moveThreshold;
     private PlayerMovement movementScript;
     private Animator anim;
     private Rigidbody2D body;
@@ -13,14 +12,10 @@ public class PlayerAnimations : MonoBehaviour
     private int isGroundedHash;
     private int isJumpingHash;
     private int isTransformingHash;
-    float firstXPosition;
-    float lastXPosition;
-    bool isMoving;
 
     private void Awake() {
         movementScript = GetComponent<PlayerMovement>();
         anim = transform.GetChild(0).GetComponent<Animator>();
-        body = GetComponent<Rigidbody2D>();
 
         if(anim == null)
             Debug.LogError("Make sure visuals are first child and have animator/sprite renderer componenets");
@@ -32,30 +27,14 @@ public class PlayerAnimations : MonoBehaviour
         if(isMagician)
             isTransformingHash = Animator.StringToHash("isTransforming");
 
-        firstXPosition = transform.position.x;
     }
 
     private void Update() {
-
-        //anim.SetFloat(velocityHash, Mathf.Abs(body.velocity.x));
         anim.SetBool(isGroundedHash, movementScript.IsGrounded);
-    }
-
-    void FixedUpdate() {
-        lastXPosition = transform.position.x;
-
-        if(Mathf.Abs(lastXPosition - firstXPosition) > moveThreshold)
-            isMoving = true;
-        else
-            isMoving = false;
-
-        anim.SetBool(isMovingHash, isMoving);
-
-        firstXPosition = lastXPosition;
+        anim.SetBool(isMovingHash, Mathf.Abs(movementScript.CurMoveVel) > 0.01);
     }
 
     public void SetIsTransforming(bool isTransforming) {
-
         if(isMagician)
             anim.SetBool(isTransformingHash, isTransforming);
     }
