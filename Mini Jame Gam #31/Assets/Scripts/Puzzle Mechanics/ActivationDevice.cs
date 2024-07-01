@@ -8,6 +8,8 @@ public class ActivationDevice : MonoBehaviour
     [SerializeField] private bool isPlate;
     [SerializeField] private MovingPlatform platformScript;
     private PlayerInput inputScript;
+    private Animator anim;
+    private int isEnabledHash;
     private int itemsOnPlate;
     private float isNextToSwitchTimer = -1f;
     private bool isActivated = false;
@@ -19,6 +21,24 @@ public class ActivationDevice : MonoBehaviour
 
     private void Awake() {
         inputScript = GetComponent<PlayerInput>();
+        anim = transform.GetChild(0).GetComponent<Animator>();
+        isEnabledHash = Animator.StringToHash("isEnabled");
+    }
+
+    private void Start() {
+        RestartEvent.current.onRestartEvent += ResetDevice;
+    }
+
+    private void OnDestroy() {
+        RestartEvent.current.onRestartEvent -= ResetDevice;
+    }
+
+    /** Resets switch and platform, called when level is restarted **/
+    public void ResetDevice() {
+        isActivated = false;
+        isNextToSwitchTimer = -1f;
+        anim.SetBool(isEnabledHash, false);
+        platformScript.ResetPlatform();
     }
 
     /** Enables moving platform for pressure plates **/
@@ -26,6 +46,7 @@ public class ActivationDevice : MonoBehaviour
         if(isPlate && (other.gameObject.tag == "Magician" || other.gameObject.tag == "Hat")) {
             itemsOnPlate++;
             platformScript.ActivatePlatform();
+            anim.SetBool(isEnabledHash, true);
             // play plate sound
             SoundManager.current.PlaySFX(plateSound, 0.3f);
         }
@@ -38,6 +59,7 @@ public class ActivationDevice : MonoBehaviour
 
             if(itemsOnPlate <= 0) {
                 platformScript.DeactivatePlatform();
+                anim.SetBool(isEnabledHash, false);
                 // play plate sound
                 SoundManager.current.PlaySFX(plateSound, 0.3f);
             }
@@ -67,11 +89,11 @@ public class ActivationDevice : MonoBehaviour
 
                 // flip switch stick and play sound
                 if(!isActivated) {
-                    transform.localScale = Vector3.one;
+                    anim.SetBool(isEnabledHash, false);
                     SoundManager.current.PlaySFX(switchDisableSound, 0.1f);
                 }
                 else {
-                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                    anim.SetBool(isEnabledHash, true);
                     SoundManager.current.PlaySFX(switchEnableSound, 0.1f);
                 }
             }

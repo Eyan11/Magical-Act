@@ -16,7 +16,7 @@ public class MovingPlatform : MonoBehaviour
     private Rigidbody2D body;
     private Vector3 startPos;
     private Vector3 endPos;
-    private float lerpPercent = 0.001f;
+    private float lerpPercent = 0.01f;
     private bool isActivated = false;
     private bool hasLoopMovement = false;
     private int direction = 1;
@@ -46,6 +46,16 @@ public class MovingPlatform : MonoBehaviour
     public void TogglePlatformLoop() {
         hasLoopMovement = true;
         isActivated = !isActivated;
+    }
+
+    /** Resets position and variables, called when level is restarted **/
+    public void ResetPlatform() {
+        transform.position = startPos;
+        isActivated = false;
+        hasLoopMovement = false;
+        pauseCountdown = -1f;
+        direction = 1;
+        lerpPercent = 0.01f;
     }
 
     public float GetVelocity(char movementType) {

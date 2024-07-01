@@ -52,8 +52,16 @@ public class LevelManager : MonoBehaviour
         if(CurLevel <= 0 || nextLevel <= 0 || CurLevel >= levelArr.Length - 1 || nextLevel >= levelArr.Length - 1)
             StartCoroutine(SoundManager.current.LowerMusicVolumeCoroutine(curtainCloseTime));
 
-        CurLevel = nextLevel;
+        // Reset puzzle devices if restarting level
+        if(CurLevel == nextLevel)
+            Invoke("TriggerRestartEvent", curtainCloseTime);
+        
         Invoke("SetUpCurrentLevel", curtainCloseTime);
+        CurLevel = nextLevel;
+    }
+
+    private void TriggerRestartEvent() {
+        RestartEvent.current.TriggerRestartEvent();
     }
 
     private void SetUpCurrentLevel() {

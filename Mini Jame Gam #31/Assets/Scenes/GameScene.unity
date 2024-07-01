@@ -6585,6 +6585,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1841246572}
   - component: {fileID: 1841246573}
+  - component: {fileID: 1841246574}
   m_Layer: 0
   m_Name: Level Manager
   m_TagString: Untagged
@@ -6630,7 +6631,7 @@ MonoBehaviour:
   uiScript: {fileID: 232474511}
   levelArr:
   - {fileID: 672237483}
-  - {fileID: 419569155}
+  - {fileID: 726617666}
   - {fileID: 2056484771}
   - {fileID: 1908435415}
   - {fileID: 726617666}
@@ -6647,6 +6648,18 @@ MonoBehaviour:
   endMusic: {fileID: 8300000, guid: 3a6552bf261fcb64d8a747fa42fa3c69, type: 3}
   musicVol: 0.4
   curtainCloseTime: 1
+--- !u!114 &1841246574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841246571}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9235c21f2c723d84eb5735761066ac77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1850715699
 PrefabInstance:
   m_ObjectHideFlags: 0
