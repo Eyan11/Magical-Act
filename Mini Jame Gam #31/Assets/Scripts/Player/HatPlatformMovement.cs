@@ -6,12 +6,13 @@ public class HatPlatformMovement : MonoBehaviour
 {
     [SerializeField] private float rayDist;
     [SerializeField] private float rayInterval;
+    private const float HAT_VEL_MULT = 1.425f;
     private int platformLayer;
     private BoxCollider2D coll;
     private Rigidbody2D body;
     private RaycastHit2D[] hits = new RaycastHit2D[20];
     private int numHit = 0;
-    private Vector2 hatVel = Vector2.zero;
+    private Vector2 platVel = Vector2.zero;
 
     
     private void Awake() {
@@ -22,12 +23,12 @@ public class HatPlatformMovement : MonoBehaviour
 
     private void OnEnable() {
         body.velocity = Vector2.zero;
-        hatVel = Vector2.zero;
+        platVel = Vector2.zero;
         StartCoroutine(GroundCheckCoroutine());
     }
 
     public float GetHatToPlayerVel() {
-        return hatVel.x * 0.7f;
+        return platVel.x;
     }
 
     /** Continuosly checks if grounded and if on moving platform **/
@@ -41,21 +42,21 @@ public class HatPlatformMovement : MonoBehaviour
             if(hits[i].transform.gameObject.layer == platformLayer) {
 
                 // get platform x velocity
-                hatVel.x = hits[i].transform.GetComponent<MovingPlatform>().GetVelocity('H');
+                platVel.x = hits[i].transform.GetComponent<MovingPlatform>().GetHorizontalVelocity();
                 Debug.Log("On Platform");
                 break;
             }
             else
-                hatVel.x = 0f;
+                platVel.x = 0f;
         }
 
         // if in air, stop moving with platform
         if(numHit <= 0) {
-            hatVel.x = 0f;
+            platVel.x = 0f;
         }
 
-        hatVel.y = body.velocity.y;
-        body.velocity = hatVel;
+        platVel.y = body.velocity.y;
+        body.velocity = platVel * HAT_VEL_MULT;
 
         yield return new WaitForSeconds(rayInterval);
         StartCoroutine(GroundCheckCoroutine());

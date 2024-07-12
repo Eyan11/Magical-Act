@@ -1295,7 +1295,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2526389128813802537, guid: efc3f0006e28e924bae32b30946110dc, type: 3}
       propertyPath: m_Name
-      value: Moving Platform
+      value: Moving Platform (Sun)
       objectReference: {fileID: 0}
     - target: {fileID: 4609499714974917998, guid: efc3f0006e28e924bae32b30946110dc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1605,7 +1605,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2526389128813802537, guid: 68a55decfb5c289459c7e34c2f8fe7b9, type: 3}
       propertyPath: m_Name
-      value: Moving Platform 1
+      value: Moving Platform (Moon)
       objectReference: {fileID: 0}
     - target: {fileID: 4609499714974917998, guid: 68a55decfb5c289459c7e34c2f8fe7b9, type: 3}
       propertyPath: m_LocalPosition.x

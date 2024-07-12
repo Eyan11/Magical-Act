@@ -41,8 +41,9 @@ public class ActivationDevice : MonoBehaviour
         platformScript.ResetPlatform();
     }
 
-    /** Enables moving platform for pressure plates **/
+    /** Enables moving platform for pressure plates and tracks if magician is next to switch **/
     private void OnTriggerEnter2D(Collider2D other) {
+        // pressure plate
         if(isPlate && (other.gameObject.tag == "Magician" || other.gameObject.tag == "Hat")) {
             itemsOnPlate++;
             platformScript.ActivatePlatform();
@@ -50,9 +51,13 @@ public class ActivationDevice : MonoBehaviour
             // play plate sound
             SoundManager.current.PlaySFX(plateSound, 0.3f);
         }
+        // switch
+        else if(!isPlate && other.gameObject.tag == "Magician") {
+            isNextToSwitchTimer = 100f;
+        }
     }
 
-    /** Disables moving platform for pressure plates **/
+    /** Disables moving platform for pressure plates and tracks if magician is not next to switch**/
     private void OnTriggerExit2D(Collider2D other) {
         if(isPlate && (other.gameObject.tag == "Magician" || other.gameObject.tag == "Hat")) {
             itemsOnPlate--;
@@ -64,14 +69,9 @@ public class ActivationDevice : MonoBehaviour
                 SoundManager.current.PlaySFX(plateSound, 0.3f);
             }
         }
-    }
-
-    /** Tracks if magician is next to switch **/
-    private void OnTriggerStay2D(Collider2D other) {
-        if(!isPlate && other.gameObject.tag == "Magician") {
-
-            // timer used so input can be checked in Update()
-            isNextToSwitchTimer = 0.5f;
+        // switch
+        else if(!isPlate && other.gameObject.tag == "Magician") {
+            isNextToSwitchTimer = 0.2f;
         }
     }
 

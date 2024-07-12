@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
             if(hits[i].transform.gameObject.layer == movingPlatformLayer) {
 
                 IsGrounded = true;
-                platformVel = hits[i].transform.GetComponent<MovingPlatform>().GetVelocity('P');
+                platformVel = hits[i].transform.GetComponent<MovingPlatform>().GetHorizontalVelocity();
                 break;
             }
             // on floor

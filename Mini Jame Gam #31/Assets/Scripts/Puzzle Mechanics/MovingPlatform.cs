@@ -4,86 +4,89 @@ using UnityEngine;
 
 public class MovingPlatform : MonoBehaviour
 {
-    [SerializeField] private Transform endPoint;
+    [SerializeField] bool isHorizontalMovement;
+    [SerializeField] private float distance;
     [SerializeField] private float pauseTime;
-    private const float MOVE_SPEED = 0.3f;
-    private const float PLAYER_PLATFORM_VEL = 0.7f;
-    private const float HAT_PLATFORM_VEL = 1f;
-    private int returnedDir;
-    private bool isHorizontalMovement = false;
-    private bool isDirectionReversed = false; 
+    private bool isMovingToEnd = true;
+    private const float MOVE_SPEED = 1f; 
     private float pauseCountdown = -1f;
     private Rigidbody2D body;
     private Vector3 startPos;
     private Vector3 endPos;
-    private float lerpPercent = 0.01f;
     private bool isActivated = false;
     private bool hasLoopMovement = false;
-    private int direction = 1;
+    private Vector2 velDir = Vector2.zero;
 
     private void Awake() {
         startPos = transform.position;
-        endPos = endPoint.position;
         body = GetComponent<Rigidbody2D>();
+        CalculateVelocity();
 
-        // determine if horizontal or vertical movement
-        if((Mathf.Abs(startPos.x) - Mathf.Abs(endPos.x)) > 0.5)
-            isHorizontalMovement = true;
-
-        // calculate right direction
-        if(isHorizontalMovement && (endPos.x < startPos.x))
-            isDirectionReversed = true;
+        endPos = startPos + new Vector3(velDir.x * Mathf.Abs(distance), velDir.y * Mathf.Abs(distance), 0);
     }
 
     public void ActivatePlatform() {
         isActivated = true;
+        isMovingToEnd = true;
+        CalculateVelocity();
+        body.velocity = MOVE_SPEED * velDir;
     }
 
     public void DeactivatePlatform() {
         isActivated = false;
+        isMovingToEnd = false;
+        CalculateVelocity();
+        body.velocity = MOVE_SPEED * velDir;
     }
 
     public void TogglePlatformLoop() {
         hasLoopMovement = true;
         isActivated = !isActivated;
+
+        if(!isActivated)
+            body.velocity = Vector2.zero;
     }
 
     /** Resets position and variables, called when level is restarted **/
     public void ResetPlatform() {
         transform.position = startPos;
         isActivated = false;
+        isMovingToEnd = true;
         hasLoopMovement = false;
         pauseCountdown = -1f;
-        direction = 1;
-        lerpPercent = 0.01f;
+        CalculateVelocity();
     }
 
-    public float GetVelocity(char movementType) {
+    public float GetHorizontalVelocity() {
+        return body.velocity.x;
+    }
 
-        // platform is moving
-        if(isHorizontalMovement && lerpPercent > 0 && lerpPercent < 1) {
+    private bool IsPastPosition(Vector3 destination) {
 
-            // account for right direction
-            if(isDirectionReversed)
-                returnedDir = direction * -1;
-            else
-                returnedDir = direction;
-        }
+        if((destination - transform.position).sqrMagnitude < 0.001)
+            return true;
         else
-            returnedDir = 0;
-
-        switch(movementType) {
-            case 'P':
-                return returnedDir * PLAYER_PLATFORM_VEL;
-            case 'H':
-                return returnedDir * HAT_PLATFORM_VEL;
-            default:
-                Debug.LogError("Invalid argument in MovingPlatform > GetVelocity()");
-                return 0;
-        }
+            return false;
     }
 
-    private void FixedUpdate() {
+    private void CalculateVelocity() {
+
+        // set values
+        if(isHorizontalMovement)
+            velDir = Vector2.right;
+        else
+            velDir = Vector2.up;
+
+        // set sign
+        velDir *= Mathf.Sign(distance);
+
+        // flip direction if moving to start (for loop movement)
+        if(!isMovingToEnd)
+            velDir *= -1;
+    }
+
+
+    private void Update() {
 
         // for looping movement (switch activation)
         if(hasLoopMovement && isActivated) {
@@ -95,36 +98,34 @@ public class MovingPlatform : MonoBehaviour
             }
 
             // move in loop
-            lerpPercent += MOVE_SPEED * direction * Time.fixedDeltaTime;
-            body.MovePosition(Vector3.Lerp(startPos, endPos, lerpPercent));
+            body.velocity = MOVE_SPEED * velDir;
 
-            // change directions when start or end is reached
-            if(lerpPercent >= 1) {
-                direction = -1;
+            // change directions
+            if(isMovingToEnd && IsPastPosition(endPos)) {
+
+                isMovingToEnd = false;
+                velDir *= -1;
                 pauseCountdown = pauseTime;
+                body.velocity = Vector2.zero;
             }
-            else if(lerpPercent <= 0) {
-                direction = 1;
+            else if(!isMovingToEnd && IsPastPosition(startPos)) {
+
+                isMovingToEnd = true;
+                velDir *= -1;
                 pauseCountdown = pauseTime;
+                body.velocity = Vector2.zero;
             }
-            
         }
 
         // for non-looping movement (pressure plate activation)
-        else if(!hasLoopMovement) {
+        else if(!hasLoopMovement && body.velocity != Vector2.zero) {
 
-            // move to end
-            if(isActivated && lerpPercent <= 1) {
-                direction = 1;
-                lerpPercent += MOVE_SPEED * Time.fixedDeltaTime;
-                body.MovePosition(Vector3.Lerp(startPos, endPos, lerpPercent));
-            }
-            // move to start
-            else if(!isActivated && lerpPercent >= 0) {
-                direction = -1;
-                lerpPercent -= MOVE_SPEED * Time.fixedDeltaTime;
-                body.MovePosition(Vector3.Lerp(startPos, endPos, lerpPercent));
-            }
+            // reached end
+            if(isActivated && IsPastPosition(endPos))
+                body.velocity = Vector2.zero;
+            // reached start
+            else if(!isActivated && IsPastPosition(startPos))
+                body.velocity = Vector2.zero;
         }
     }
 }
