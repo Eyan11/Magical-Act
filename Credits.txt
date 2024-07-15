@@ -39,3 +39,7 @@ Sprites:
 Game Icons from Kenney -- https://www.kenney.nl/assets/game-icons -- License: Creative Commons 0 (used for restart icon)
 
 Input Prompts from Kenney -- https://www.kenney.nl/assets/input-prompts -- License: Creative Commons 0 (used for keyboard Input UI)
+
+Font: 
+
+Pangolin by Kevin Burke from Google Fonts -- https://fonts.google.com/specimen/Pangolin/about

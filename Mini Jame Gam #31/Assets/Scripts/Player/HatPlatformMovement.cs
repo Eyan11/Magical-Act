@@ -43,7 +43,6 @@ public class HatPlatformMovement : MonoBehaviour
 
                 // get platform x velocity
                 platVel.x = hits[i].transform.GetComponent<MovingPlatform>().GetHorizontalVelocity();
-                Debug.Log("On Platform");
                 break;
             }
             else
